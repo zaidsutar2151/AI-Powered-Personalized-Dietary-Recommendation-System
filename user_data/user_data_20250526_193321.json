@@ -1,0 +1,13 @@
+{
+    "Age": 25,
+    "Gender": "Male",
+    "Weight_kg": 65.0,
+    "Height_cm": 165.0,
+    "Diet_Preference": "Non-Vegetarian",
+    "Activity_Level": "Light",
+    "Weekly_Activity_Days": 6,
+    "Disease": "Hypertension",
+    "Food_Allergies": "Tree Nuts",
+    "Health_Goal": "Weight Gain",
+    "timestamp": "2025-05-26T19:33:21.215033"
+}

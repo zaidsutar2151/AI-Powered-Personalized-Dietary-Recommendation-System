@@ -1,0 +1,320 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Team Spectors</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg">
+      <div class="container text-center">
+        <a class="navbar-brand mx-auto" href="#">Team Spectors</a>
+      </div>
+    </nav>
+
+    <h1 class="text-center page-title">Nutrition & Fitness Planner</h1>
+
+    <div class="container mt-4">
+      <div class="row">
+        <div class="col-lg-8 step1-col order-lg-1">
+          <div class="form-card">
+            <div class="alert alert-info mb-3" role="alert">
+              <strong>Step 1:</strong> Calculate your expected calories by filling out the form below. This is the first step before using the AI chat feature.
+              <br>
+              <strong>Step 2:</strong> After calculating your calories, use the chat feature to analyze your daily food intake and get personalized suggestions.
+            </div>
+            <form action="/predict" method="post" id="nutritionForm">
+              <!-- Personal Information Section -->
+              <div class="form-section mb-4">
+                <h5 class="section-title"><i class="bi bi-person-circle"></i> Personal Information</h5>
+                <div class="row g-3">
+                  <div class="col-md-6">
+                    <label class="form-label">Age</label>
+                    <div class="input-group">
+                      <input type="number" name="Age" class="form-control" min="15" max="100" required>
+                      <span class="input-group-text">years</span>
+                    </div>
+                    <small class="text-muted">Range: 15-100 years</small>
+                  </div>
+                  <div class="col-md-6">
+                    <label class="form-label">Gender</label>
+                    <div class="d-flex">
+                      <div class="form-check me-3">
+                        <input class="form-check-input" type="radio" name="Gender" id="genderMale" value="Male" required>
+                        <label class="form-check-label" for="genderMale">Male</label>
+                      </div>
+                      <div class="form-check">
+                        <input class="form-check-input" type="radio" name="Gender" id="genderFemale" value="Female">
+                        <label class="form-check-label" for="genderFemale">Female</label>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <label class="form-label">Weight</label>
+                    <div class="input-group">
+                      <input type="number" name="Weight" class="form-control" min="30" max="200" required>
+                      <span class="input-group-text">kg</span>
+                    </div>
+                    <small class="text-muted">Range: 30-200 kg</small>
+                  </div>
+                  <div class="col-md-6">
+                    <label class="form-label">Height</label>
+                    <div class="input-group">
+                      <input type="number" name="Height" class="form-control" min="120" max="220" required>
+                      <span class="input-group-text">cm</span>
+                    </div>
+                    <small class="text-muted">Range: 120-220 cm</small>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Diet & Activity Section -->
+              <div class="form-section mb-4">
+                <h5 class="section-title"><i class="bi bi-activity"></i> Diet & Activity</h5>
+                <div class="row g-3">
+                  <div class="col-md-6">
+                    <label class="form-label">Diet Preference</label>
+                    <select name="Diet_Preference" class="form-select" required>
+                      <option value="">Select your diet...</option>
+                      <option>Non-Vegetarian</option>
+                      <option>Vegetarian</option>
+                      <option>Vegan</option>
+                      <option>Mediterranean</option>
+                      <option>Keto</option>
+                      <option>Gluten-Free</option>
+                      <option>Low-Carb</option>
+                      <option>Plant-Based</option>
+                    </select>
+                  </div>
+                  <div class="col-md-6">
+                    <label class="form-label">Activity Level</label>
+                    <select name="Activity_Level" class="form-select" required>
+                      <option value="">Select activity level...</option>
+                      <option>Sedentary</option>
+                      <option>Light</option>
+                      <option>Moderate</option>
+                      <option>Active</option>
+                      <option>Very Active</option>
+                    </select>
+                  </div>
+                  <div class="col-md-6">
+                    <label class="form-label">Weekly Activity Days</label>
+                    <div class="range-container">
+                      <input type="range" class="form-range" name="Weekly_Activity_Days" min="0" max="7" value="3" id="activityDaysRange" oninput="updateDaysValue(this.value)">
+                      <div class="d-flex justify-content-between">
+                        <span>0</span>
+                        <span>1</span>
+                        <span>2</span>
+                        <span>3</span>
+                        <span>4</span>
+                        <span>5</span>
+                        <span>6</span>
+                        <span>7</span>
+                      </div>
+                      <div class="text-center mt-1">
+                        <span id="daysValue">3</span> days per week
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Health Considerations Section -->
+              <div class="form-section mb-4">
+                <h5 class="section-title"><i class="bi bi-heart-pulse"></i> Health Considerations</h5>
+                <div class="row g-3">
+                  <div class="col-md-6">
+                    <label class="form-label">Medical Condition</label>
+                    <select name="Disease" class="form-select" required>
+                      <option value="">Select condition...</option>
+                      <option>None</option>
+                      <option>Diabetes</option>
+                      <option>Hypertension</option>
+                      <option>Heart Disease</option>
+                      <option>GERD</option>
+                    </select>
+                  </div>
+                  <div class="col-md-6">
+                    <label class="form-label">Food Allergies</label>
+                    <select name="Food_Allergies" class="form-select" required>
+                      <option value="">Select allergies...</option>
+                      <option>None</option>
+                      <option>Peanuts</option>
+                      <option>Tree Nuts</option>
+                      <option>Milk</option>
+                      <option>Eggs</option>
+                    </select>
+                  </div>
+                  <div class="col-md-6">
+                    <label class="form-label">Health Goal</label>
+                    <select name="Health_Goal" class="form-select" required>
+                      <option value="">Select your goal...</option>
+                      <option>Weight Loss</option>
+                      <option>Maintenance</option>
+                      <option>Weight Gain</option>
+                      <option>Muscle Gain</option>
+                      <option>Better Health</option>
+                      <option>Athletic Performance</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="text-center mt-4">
+                <button type="button" id="sampleDataBtn" class="btn btn-sample"><i class="bi bi-lightning-charge"></i> Fill Sample Data</button>
+                <button type="submit" class="btn btn-submit"><i class="bi bi-calculator"></i> Calculate Calories</button>
+              </div>
+            </form>
+          </div>
+          
+          {% if calories %}
+          <div class="calorie-result mt-4">
+            <div class="calorie-card">
+              <div class="calorie-header">
+                <i class="bi bi-fire calorie-icon"></i>
+                <h4>Your Daily Calorie Target</h4>
+              </div>
+              <div class="calorie-value">{{ calories }}</div>
+              <div class="calorie-unit">kilocalories per day</div>
+              <div class="calorie-info">
+                <p>This is your recommended daily calorie intake based on your profile.</p>
+                <button class="btn btn-details" data-bs-toggle="modal" data-bs-target="#caloriesModal">
+                  <i class="bi bi-info-circle"></i> View Details
+                </button>
+              </div>
+            </div>
+          </div>
+          {% endif %}
+        </div>
+        
+        <div class="col-lg-4 chat-col order-lg-2">
+          <div class="chat-card c1">
+            <h5><i class="bi bi-chat-dots"></i> Chat with AI</h5>
+            {% if not calories %}
+            <div class="alert alert-warning mb-3" role="alert">
+              <strong>Step 2:</strong> Please complete Step 1 by calculating your expected calories first (using the form on the left) before using this chat feature.
+            </div>
+            {% else %}
+            <div class="alert alert-success mb-3" role="alert">
+              <strong>Step 2:</strong> Now you can enter what you eat in a day, and the AI will analyze your intake compared to your target of {{ calories }} kcal.
+            </div>
+            {% endif %}
+            <div id="chat-messages" class="flex-grow-1 overflow-auto mb-3">
+              {% if request.form.get('message','') %}
+                <div class="d-flex justify-content-end mb-2">
+                  <div class="p-2 rounded user-message" style="max-width:70%;">
+                    {{ request.form.get('message','') }}
+                  </div>
+                </div>
+              {% endif %}
+              {% if chat_response %}
+                <div class="d-flex justify-content-start mb-2">
+                  <div class="p-2 rounded ai-message" style="max-width:70%; white-space:pre-wrap;">
+                    {{ chat_response }}
+                  </div>
+                </div>
+              {% endif %}
+            </div>
+            <form action="/chat" method="post" class="mt-auto">
+              <div class="input-group">
+                <textarea name="message" class="form-control" rows="1" placeholder="Enter what you eat in a day..." required style="resize:none;"></textarea>
+                <input type="hidden" name="expected_cal" value="{{ calories or 0 }}">
+                <button type="submit" class="btn btn-chat"><i class="bi bi-send"></i></button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Calories Modal -->
+    <div class="modal fade" id="caloriesModal" tabindex="-1">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title"><i class="bi bi-info-circle"></i> Calorie Details</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+          </div>
+          <div class="modal-body">
+            <div class="calorie-detail-card">
+              <div class="calorie-detail-value">{{ calories }}</div>
+              <div class="calorie-detail-unit">kcal/day</div>
+              <div class="calorie-detail-info">
+                <p>This calorie target is calculated based on your:</p>
+                <ul>
+                  <li>Age, gender, weight and height</li>
+                  <li>Activity level and frequency</li>
+                  <li>Health goals and dietary preferences</li>
+                </ul>
+                <p>Use this target as a guide for your daily food intake.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Sample Data Script -->
+    <script>
+      // Update activity days value display
+      function updateDaysValue(val) {
+        document.getElementById('daysValue').innerText = val;
+      }
+      
+      document.addEventListener('DOMContentLoaded', function() {
+        const sampleDataBtn = document.getElementById('sampleDataBtn');
+        
+        sampleDataBtn.addEventListener('click', function() {
+          // Sample data
+          const sampleData = {
+            'Age': 35,
+            'Gender': 'Male',
+            'Weight': 75,
+            'Height': 175,
+            'Diet_Preference': 'Non-Vegetarian',
+            'Activity_Level': 'Moderate',
+            'Weekly_Activity_Days': 4,
+            'Disease': 'None',
+            'Food_Allergies': 'None',
+            'Health_Goal': 'Weight Loss'
+          };
+          
+          // Fill the form with sample data
+          const form = document.getElementById('nutritionForm');
+          
+          for (const field in sampleData) {
+            const element = form.elements[field];
+            if (element) {
+              if (element.tagName === 'SELECT') {
+                // For select elements, find and select the option
+                for (let i = 0; i < element.options.length; i++) {
+                  if (element.options[i].text === sampleData[field]) {
+                    element.selectedIndex = i;
+                    break;
+                  }
+                }
+              } else if (field === 'Gender') {
+                // For radio buttons
+                const radioBtn = document.getElementById('gender' + sampleData[field]);
+                if (radioBtn) radioBtn.checked = true;
+              } else if (field === 'Weekly_Activity_Days') {
+                // For range input
+                element.value = sampleData[field];
+                updateDaysValue(sampleData[field]);
+              } else {
+                // For input elements
+                element.value = sampleData[field];
+              }
+            }
+          }
+        });
+      });
+    </script>
+  </body>
+</html>
