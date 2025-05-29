@@ -15,6 +15,12 @@ Many existing dietary and nutrition platforms provide users with generic, predef
 
 We present an AI-powered dietary recommendation system that dynamically generates personalized meal and habit suggestions based on each user's unique health profile, goals, and feedback. By integrating machine learning for calorie prediction and generative AI for adaptive meal planning, our platform offers real-time, interactive guidance that evolves with the user's needs, making healthy eating more accessible and sustainable.
 
+## 🔄 How It Works
+
+1. **Step 1:** 🧍‍♂️ User enters health and lifestyle details; the system predicts daily calorie needs.
+2. **Step 2:** 💬 User chats with the AI assistant for personalized meal and habit suggestions.
+3. **AI Feedback Loop:** 🔁 The AI refines its recommendations based on ongoing user interaction.
+
 ## 🎯 Features
 
 * 🤖 **AI-Powered Chat:**
@@ -121,11 +127,6 @@ We present an AI-powered dietary recommendation system that dynamically generate
 
    * Open your browser and go to `http://localhost:5000`
 
-## 🔄 How It Works
-
-1. **Step 1:** 🧍‍♂️ User enters health and lifestyle details; the system predicts daily calorie needs.
-2. **Step 2:** 💬 User chats with the AI assistant for personalized meal and habit suggestions.
-3. **AI Feedback Loop:** 🔁 The AI refines its recommendations based on ongoing user interaction.
 
 ## 📜 License
 
